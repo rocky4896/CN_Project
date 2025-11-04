@@ -1,0 +1,104 @@
+# LAN Collaboration System - Complete Requirements
+# All dependencies needed for the GUI client and server
+
+# ============================================================================
+# CORE GUI FRAMEWORK
+# ============================================================================
+PyQt6>=6.4.0                    # Modern GUI framework for client interface
+PyQt6-Qt6>=6.4.0               # Qt6 binaries for PyQt6
+
+# ============================================================================
+# VIDEO & IMAGE PROCESSING
+# ============================================================================
+opencv-python>=4.8.0           # Video capture, processing, and streaming
+numpy>=1.24.0                  # Array operations for image/video data
+Pillow>=10.0.0                 # Image processing and format support
+
+# ============================================================================
+# AUDIO PROCESSING
+# ============================================================================
+pyaudio>=0.2.11                # Audio capture and playback
+
+# ============================================================================
+# PLATFORM-SPECIFIC NOTES
+# ============================================================================
+# Windows users: If PyAudio installation fails, try:
+# pip install pipwin
+# pipwin install pyaudio
+# 
+# Or download wheel from: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
+#
+# NOTE: PyQt6-tools is NOT required for the application to run.
+# It's only needed for development (Qt Designer, etc.)
+# The application only needs PyQt6 and PyQt6-Qt6.
+
+# ============================================================================
+# SCREEN CAPTURE
+# ============================================================================
+mss>=9.0.1                     # Fast cross-platform screen capture
+
+# ============================================================================
+# NETWORKING & ASYNC
+# ============================================================================
+# asyncio - Built into Python 3.7+
+# socket - Built into Python standard library
+# threading - Built into Python standard library
+
+# ============================================================================
+# DATA & UTILITIES
+# ============================================================================
+# json - Built into Python standard library
+# struct - Built into Python standard library
+# hashlib - Built into Python standard library
+# uuid - Built into Python standard library
+# pathlib - Built into Python standard library
+# datetime - Built into Python standard library
+# collections - Built into Python standard library
+
+# ============================================================================
+# OPTIONAL ENHANCEMENTS
+# ============================================================================
+# These are optional but recommended for enhanced functionality:
+# 
+# pydub>=0.25.1                # Advanced audio processing
+# opus-python>=1.0.1           # Opus audio codec for better compression
+# psutil>=5.9.0                # System monitoring and process management
+
+# ============================================================================
+# INSTALLATION COMMANDS
+# ============================================================================
+# 
+# GENERAL INSTALLATION:
+# pip install -r requirements.txt
+#
+# WINDOWS USERS (if above fails):
+# pip install -r requirements-windows.txt
+#
+# MANUAL INSTALLATION (if requirements files fail):
+# pip install --upgrade pip
+# pip install PyQt6 PyQt6-Qt6
+# pip install opencv-python numpy Pillow mss
+# 
+# FOR PYAUDIO ON WINDOWS (if installation fails):
+# Method 1: pip install pipwin && pipwin install pyaudio
+# Method 2: Download wheel from https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
+# Method 3: Use conda: conda install pyaudio
+#
+# VERIFICATION COMMANDS:
+# python -c "from PyQt6.QtWidgets import QApplication; print('✅ PyQt6 OK')"
+# python -c "import cv2; print('✅ OpenCV OK')"
+# python -c "import numpy; print('✅ NumPy OK')"
+# python -c "import PIL; print('✅ Pillow OK')"
+# python -c "import mss; print('✅ MSS OK')"
+# python -c "import pyaudio; print('✅ PyAudio OK')"
+
+# ============================================================================
+# SYSTEM REQUIREMENTS
+# ============================================================================
+# 
+# Python: 3.8 or higher
+# Operating System: Windows, macOS, or Linux
+# RAM: 4GB minimum, 8GB recommended
+# Network: LAN connection for multi-user features
+# Camera: Optional for video features
+# Microphone: Optional for audio features
