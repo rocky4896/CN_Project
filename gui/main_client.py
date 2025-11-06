@@ -975,6 +975,28 @@ class NetworkThread(QThread):
         """Disconnect from server."""
         self.running = False
         self.connected = False
+        
+        # Properly close the connection if it exists
+        if hasattr(self, 'writer') and self.writer and not self.writer.is_closing():
+            try:
+                # Schedule the connection close in the event loop
+                if hasattr(self, 'loop') and self.loop and self.loop.is_running():
+                    asyncio.run_coroutine_threadsafe(self._close_connection(), self.loop)
+                else:
+                    # If loop is not running, close directly
+                    self.writer.close()
+            except Exception as e:
+                print(f"[DEBUG] Error during disconnect: {e}")
+    
+    async def _close_connection(self):
+        """Helper method to close connection properly."""
+        try:
+            if self.writer and not self.writer.is_closing():
+                self.writer.close()
+                await self.writer.wait_closed()
+                print("[DEBUG] Connection closed properly")
+        except Exception as e:
+            print(f"[DEBUG] Error closing connection: {e}")
 
 
 class VideoClient(QThread):
@@ -3264,19 +3286,32 @@ class ClientMainWindow(QMainWindow):
             time.sleep(0.5)
         
         if self.network_thread:
+            print("[DEBUG] Stopping network thread...")
             self.network_thread.disconnect()
-            self.network_thread.wait()
+            # Give the thread a moment to process the disconnect
+            if not self.network_thread.wait(3000):  # Wait up to 3 seconds
+                print("[WARNING] Network thread did not stop gracefully, terminating...")
+                self.network_thread.terminate()
             self.network_thread = None
+            print("[DEBUG] Network thread stopped")
         
         if self.video_client:
+            print("[DEBUG] Stopping video client...")
             self.video_client.stop()
-            self.video_client.wait()
+            if not self.video_client.wait(2000):  # Wait up to 2 seconds
+                print("[WARNING] Video client did not stop gracefully, terminating...")
+                self.video_client.terminate()
             self.video_client = None
+            print("[DEBUG] Video client stopped")
         
         if self.audio_client:
+            print("[DEBUG] Stopping audio client...")
             self.audio_client.stop()
-            self.audio_client.wait()
+            if not self.audio_client.wait(2000):  # Wait up to 2 seconds
+                print("[WARNING] Audio client did not stop gracefully, terminating...")
+                self.audio_client.terminate()
             self.audio_client = None
+            print("[DEBUG] Audio client stopped")
         
         # Stop screen sharing
         if hasattr(self, 'screen_capture_client') and self.screen_capture_client:
